@@ -122,13 +122,15 @@ void steganography::encipher()
     }
 
   //encipher loop
-  int count = 0;
+  unsigned int count = 0;
   for (unsigned int j = 0; j < cipherText.size(); j++)
     {
       for (int i = 0; i < 8; i++)
 	{
 	  colorData[count] = colorData[count] + (getNthBit(cipherText[j], 7 - i));
 	  count++;
+	  if (count == colorData.size())
+	    return;
 	}
     }
 }
