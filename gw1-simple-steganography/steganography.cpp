@@ -27,11 +27,10 @@ void steganography::readImage(string fileName)
   //input file stream
   int pixelCount;
   ifstream image;
-  image.open( fileName);
+  image.open(fileName);
 
   //header
   image >> magicNumber;
-  image.get();
   image >> width >> height;
   image >> maxColor;
   pixelCount = width * height;
@@ -55,20 +54,18 @@ void steganography::printImage(string fileName)
   //header
   image << magicNumber << ' ' << endl;
   image << width << ' ' << height << ' ' << endl;
-  image << maxColor << ' ' << endl;
+  image << maxColor << ' ';
 
   //color data
   unsigned int count = 0;//count added to avoid goofy math
-  for (int j = 0; j < pixelCount / 4; j++)//displays information for 4 pixels per line
+  for (int i = 0; i < pixelCount; i++)
     {
-      for (int i = 0; i < 12; i++)//4 pixels * 3 values for rgb
-	{
-	  count = count + 1;
-	  if(count > colorData.size())
-	    image << colorData[count - 1] << ' ';
-	  count++;
-	}
-      image << endl;
+      if (count % 4 == 0)//prints endline after 4 pixels
+	image << endl;
+      image << colorData[count] << ' '
+	    << colorData[count + 1] << ' '
+	    << colorData[count + 2] << "  ";
+      count = count + 3;
     }
   image.close();
 }
