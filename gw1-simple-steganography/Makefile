@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -g -Wall -Wextra
-TARGET = steganogrpahy
+TARGET = steganography
 
 all:    class
 

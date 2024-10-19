@@ -24,7 +24,7 @@ int steganography::getNthBit(char cipherChar, int n)
 
 void steganography::readImage(string fileName)
 {
-  //input file stream
+  //variable declarations
   int pixelCount;
   ifstream image;
   image.open(fileName);
@@ -46,7 +46,7 @@ void steganography::readImage(string fileName)
 
 void steganography::printImage(string fileName)
 {
-  //output file stream
+  //variable declarations
   int pixelCount = width * height;
   ofstream image;
   image.open(fileName);
@@ -72,9 +72,8 @@ void steganography::printImage(string fileName)
 
 void steganography::readCipherText(string fileName)
 {
+  //variable declarations
   string input;
-  
-  //input file stream
   ifstream cipher;
   cipher.open(fileName);
 
@@ -111,7 +110,10 @@ void steganography::cleanImage()
 
 void steganography::encipher()
 {
+  //variable declarations
   unsigned int pixelCount = width * height;
+
+  //failsafe for text too large for storage
   if (pixelCount * 3 < cipherText.size()* 8)
     {
       cout << "Not enough data to encipher message" << endl;
@@ -126,7 +128,7 @@ void steganography::encipher()
 	{
 	  colorData[count] = colorData[count] + (getNthBit(cipherText[j], 7 - i));
 	  count++;
-	  if (count == colorData.size())
+	  if (count == colorData.size())//extra failsafe just in case
 	    return;
 	}
     }
@@ -147,13 +149,19 @@ void steganography::decipher()
       for (int i = 0; i < 8; i++)
 	{
 	  newChar = newChar + ((colorData[count] % 2) * getTwoPower(7 - i));
-	}
+	  count++;
+	}\
+
+      if (newChar == '\0')//exits if null character is deciphered
+	return;
+      else
+	cipherText = cipherText + newChar;
     }
 }
 
 int steganography::getTwoPower(int n)
 {
-  if (n == 0)
+  if (n == 0)//
     return 1;
   else
     {
