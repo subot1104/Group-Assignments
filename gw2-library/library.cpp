@@ -41,6 +41,22 @@ void Library::load_library(string filename){
   newLib.close();
 }
 
+void Library::write_library(string filename){
+  ofstream newLib;
+  newLib.open(filename);
+  list<book>::iterator it = library.begin();
+  
+  while (it != library.end()){
+    newLib << it -> title << endl;
+    newLib << it -> author << endl;
+    newLib << it -> isbn << endl;
+    newLib << it -> pages << ' ' << it -> price << ' ' << it -> year << endl;
+    it++;
+  }
+  newLib.close();
+}
+
+
 void Library::insert_sorted(const book &newBook){
   list<book>::iterator it = library.begin();
   string currentLast;
@@ -90,6 +106,11 @@ void Library::find_author(string author){
     cout << setw(30) << it -> title << '|' << setw(15) << it -> isbn << '|' << setw(5)
 	 << it -> year << '|' << setw(5) << it -> pages << '|' << '$' << setw(7) << it -> price << endl;
   }
+cout << setw(30) << "------------------------------" << '+'
+     << setw(15) << "-------------" << '+'
+     << setw(5) << "-----" << '+' << setw(5) << "-----" << '+'
+     << setw(8) << "--------" << endl;
+  
 }
 
 void Library::find_album(string title){
