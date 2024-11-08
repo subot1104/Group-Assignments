@@ -35,7 +35,16 @@ class Library{
   };
   private:
   std::list<book> library;
-
+/**
+ * inserts a new book into the library by order of last name.
+ *
+ * @param const book &newBook book being added
+ * @pre library object is called
+ * @return void
+ * @post new book is inserted in proper order
+ *
+ */
+  void insert_sorted(const book &newBook);
   public:
 
 /**
@@ -78,17 +87,23 @@ class Library{
  * 
  */
   void print_library();
+  
 
 /**
- * inserts a new book into the library by order of last name.
+ * accessor for insert_sorted method;
  *
- * @param const book &newBook book being added
- * @pre library object is called
+ * @param std::string title title of the new book
+ * @param std::string author author of the new book
+ * @param std::string isbn isbn of the new book
+ * @param int pages number of pages in the new book
+ * @param float price price of the book
+ * @param short year year of the book
+ * @pre library object is created
  * @return void 
- * @post new book is inserted in proper order
+ * @post book is added to be list
  * 
  */
-  void insert_sorted(const book &newBook);
+  void add_book(std::string title, std::string author, std::string isbn, int pages, float price, short year);
 
 /**
  * finds all books by an author and prints it onto the command line

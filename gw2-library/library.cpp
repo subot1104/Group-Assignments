@@ -88,6 +88,18 @@ void Library::insert_sorted(const book &newBook){
   library.insert(it, newBook);
 }
 
+void Library::add_book(string title, string author, string isbn, int pages, float price, short year){
+  book *newBook = new book;
+  newBook -> title = title;
+  newBook -> author = author;
+  newBook -> isbn = isbn;
+  newBook -> pages = pages;
+  newBook -> price = price;
+  newBook -> year = year;
+
+  insert_sorted(*newBook);
+}
+
 void Library::find_author(string author){
   list<book> found_books;
   list<book>::iterator it = library.begin();
