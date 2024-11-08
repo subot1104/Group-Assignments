@@ -102,7 +102,7 @@ void Library::find_author(string author){
   //returns if no books found
   if (found_books.size() == 0){
     cout << "No books found" << endl;
-    return
+    return;
   }
   else{
     //labels
@@ -162,8 +162,43 @@ void Library::find_album(string title){
   }
 }
 
-
 void Library::del(string author, string title){
-//insert delete here
+  list<book>::iterator it = library.begin();
+
+  while(it != library.end() || (it -> author != author && it -> title != title)){
+    it++;
+  }
+  if(it == library.end()){
+    cout << "Book not found" << endl;
+    return;
+  }
+  library.erase(it);
 }
 
+void Library::print_library(){
+  //labels
+  cout << setw(30) << "Title" << '|'
+       << setw(30) << "Author" << '|'
+       << setw(15) << "ISBN" << '|'
+       << setw(5) << "Year" << '|'
+       << setw(5) << "Pages" << '|'
+       << setw(8) << "Price" << endl;
+  cout << setw(30) << "------------------------------" << '+'
+       << setw(30) << "------------------------------" << '+'
+       << setw(15) << "---------------" << '+'
+       << setw(5) << "-----" << '+'
+       << setw(5) << "-----" << '+'
+       << setw(8) << "--------" << endl;
+
+  //contents
+  list<book>::iterator it = library.begin();
+  while(it != library.end()){
+    cout << setw(30) << it -> title << '|'
+	 << setw(30) << it -> author << '|'
+	 << setw(15) << it -> isbn << '|'
+	 << setw(5) << it -> year << '|'
+	 << setw(5) << it -> pages << '|'
+	 << '$' << setw(7) << it -> price << endl;
+    it++;
+  }
+}
