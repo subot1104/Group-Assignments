@@ -17,16 +17,16 @@ class Library{
     short year;
   };
   private:
-  list<book> library;
+  std::list<book> library;
 
   public:
   Library();
   ~Library();
-  void load_library(string filename);
-  void insert_sorted(book newBook);
-  void find_author(string author);
-  void find_album(string title);
-  void del(string author, string title);
+  void load_library(std::string filename);
+  void insert_sorted(const book &newBook);
+  void find_author(std::string author);
+  void find_album(std::string title);
+  void del(std::string author, std::string title);
 
 
 };

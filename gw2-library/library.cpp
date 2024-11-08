@@ -3,18 +3,17 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include "Library.h"
+#include "library.h"
 
 using namespace std;
 
-Library::Library()
-{
-  library.begin() = NULL;
+Library::Library(){
+  //remove if not needed
 }
 
 Library::~Library(){
-  library<book>::iterator it;
-  for(it = library.begin(); it != library.end(); it++){
+  list<book>::iterator it;
+  for(it = library.begin();it != library.end(); it++){
       del(it -> author, it -> title);
       }
 }
@@ -23,28 +22,74 @@ void Library::load_library(string filename){
   ifstream newLib;
   newLib.open(filename);
   
-  library<book>::iterator it;
+  list<book>::iterator it;
   it = library.begin();
   
   while(newLib){
-  it++;
-  book *temp = new book;
-  
-  getline(newLib, temp -> title);
-  getline(newLib, temp -> author);
-  getline(newLib, it -> isbn);
-  newLib >> pages >> price >> year;
-  newLib.get();
+    book *temp = new book;
+    
+    getline(newLib, temp -> title);
+    getline(newLib, temp -> author);
+    getline(newLib, temp -> isbn);
+    newLib >> temp -> pages >> temp -> price >> temp -> year;
+    newLib.get();
+
+    insert_sorted(*temp);
+    it++;
   }
 
   newLib.close();
+}
 
-void Library::insert_sorted(book newBook){
-//insert sort here
+void Library::insert_sorted(const book &newBook){
+  list<book>::iterator it = library.begin();
+  string currentLast;
+  int cLastPos;
+  string newLast;
+  int nLastPos;
+  //get last name for current book
+  cLastPos = it -> author.find_last_of(' ') + 1;
+  currentLast = it -> author.substr(cLastPos);
+
+  //same thing but for new book
+  nLastPos = newBook.author.find_last_of(' ') + 1;
+  newLast = newBook.author.substr(nLastPos);
+  
+  //checks order and updates current book
+  while(it != library.end() && newLast > currentLast){
+    it++;
+    if(it = library.end()){
+      cLastPos = it -> author.find_last_of(' ') + 1;
+      currentLast = it -> author.substr(cLastPos);
+    }
+  }
+  library.insert(it, newBook);
 }
 
 void Library::find_author(string author){
-//insert search here
+  list<book> found_books;
+  list<book>::iterator it = library.begin();
+
+  //adds found books to a new list
+  while(it != library.end()){
+    if(author == it -> author)
+      found_books.push_back(*it);
+    it++;
+  }
+  //labels
+  cout << setw(30) << "Title" << '|' << setw(15) << "ISBN" << '|' << setw(5)
+       << "Year" << '|' << setw(5) << "Pages" << '|' << setw(8) << "Price" << endl;
+  cout << setw(30) << "------------------------------" << '+'
+       << setw(15) << "---------------" << '+'
+       << setw(5) << "-----" << '+' << setw(5) << "-----" << '+'
+       << setw(8) << "--------"<< endl;
+
+  //list of found books
+  it = found_books.begin();
+  while(it != found_books.end()){
+    cout << setw(30) << it -> title << '|' << setw(15) << it -> isbn << '|' << setw(5)
+	 << it -> year << '|' << setw(5) << it -> pages << '|' << '$' << setw(7) << it -> price << endl;
+  }
 }
 
 void Library::find_album(string title){
