@@ -18,30 +18,34 @@ using namespace std;
 
 
 Library::~Library(){
-  list<book>::iterator it;
-  for(it = library.begin();it != library.end(); it++){
-      del(it -> author, it -> title);
-      }
+  library.clear();
 }
 
 void Library::load_library(string filename){
   ifstream newLib;
   newLib.open(filename);
-  
-  list<book>::iterator it;
-  it = library.begin();
-  
-  while(newLib){
-    book *temp = new book;
-    
-    getline(newLib, temp -> title);
-    getline(newLib, temp -> author);
-    getline(newLib, temp -> isbn);
-    newLib >> temp -> pages >> temp -> price >> temp -> year;
-    newLib.get();
 
-    insert_sorted(*temp);
-    it++;
+  //clears library when theres something in there
+  if(!library.empty())
+    library.clear();
+  
+  book temp;
+  
+  getline(newLib, temp.title);
+  getline(newLib, temp.author);
+  getline(newLib, temp.isbn);
+  newLib >> temp.pages >> temp.price >> temp.year;
+  newLib.ignore();
+  insert_sorted(temp);
+  
+  while(newLib){    
+    getline(newLib, temp.title);
+    getline(newLib, temp.author);
+    getline(newLib, temp.isbn);
+    newLib >> temp.pages >> temp.price >> temp.year;
+    newLib.ignore();
+    if(newLib)//double checks in case of empty line
+      insert_sorted(temp);
   }
 
   newLib.close();
@@ -69,23 +73,25 @@ void Library::insert_sorted(const book &newBook){
   int cLastPos;
   string newLast;
   int nLastPos;
-  //get last name for current book
-  cLastPos = it -> author.find_last_of(' ') + 1;
-  currentLast = it -> author.substr(cLastPos);
-
   //same thing but for new book
   nLastPos = newBook.author.find_last_of(' ') + 1;
-  newLast = newBook.author.substr(nLastPos);
+  newLast = newBook.author.substr(nLastPos, newBook.author.size());
+  if(library.empty()){
+    library.push_back(newBook);
+    return;
+  }
   
   //checks order and updates current book
-  while(it != library.end() && newLast > currentLast){
-    it++;
-    if(it == library.end()){
-      cLastPos = it -> author.find_last_of(' ') + 1;
-      currentLast = it -> author.substr(cLastPos);
+  while(it != library.end()){
+    cLastPos = it -> author.find_last_of(' ') + 1;
+    currentLast = it -> author.substr(cLastPos, it -> author.size());
+    if (newLast < currentLast){
+      library.insert(it, newBook);
+      return;
     }
+    it++;
   }
-  library.insert(it, newBook);
+  library.push_back(newBook);
 }
 
 void Library::add_book(string title, string author, string isbn, int pages, float price, short year){
@@ -106,13 +112,12 @@ void Library::find_author(string author){
 
   //adds found books to a new list
   while(it != library.end()){
-    if(author == it -> author){
+    if(author == it -> author)
       found_books.push_back(*it);
-      it++;
-    }
+    it++;
   }
   //returns if no books found
-  if (found_books.size() == 0){
+  if (found_books.empty()){
     cout << "No books found" << endl;
     return;
   }
@@ -130,11 +135,8 @@ void Library::find_author(string author){
     while(it != found_books.end()){
       cout << setw(30) << it -> title << '|' << setw(15) << it -> isbn << '|' << setw(5)
 	   << it -> year << '|' << setw(5) << it -> pages << '|' << '$' << setw(7) << it -> price << endl;
+      it++;
     }
-    cout << setw(30) << "------------------------------" << '+'
-	 << setw(15) << "-------------" << '+'
-	 << setw(5) << "-----" << '+' << setw(5) << "-----" << '+'
-	 << setw(8) << "--------" << endl;
   }
 }
 
@@ -166,18 +168,15 @@ void Library::find_album(string title){
     while(it != found_books.end()){
       cout << setw(30) << it -> author << '|' << setw(15) << it -> isbn << '|' << setw(5)
 	   << it -> year << '|' << setw(5) << it -> pages << '|' << '$' << setw(7) << it -> price << endl;
+      it++;
     }
-    cout << setw(30) << "------------------------------" << '+'
-	 << setw(15) << "-------------" << '+'
-	 << setw(5) << "-----" << '+' << setw(5) << "-----" << '+'
-	 << setw(8) << "--------" << endl;
   }
 }
 
 void Library::del(string author, string title){
   list<book>::iterator it = library.begin();
 
-  while(it != library.end() || (it -> author != author && it -> title != title)){
+  while(it != library.end() && (it -> author != author || it -> title != title)){
     it++;
   }
   if(it == library.end()){

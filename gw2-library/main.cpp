@@ -22,6 +22,7 @@ int main() {
   int pages;
   float price;
   short year;
+  cout << fixed << setprecision(2);
   
   while(choice != 'q'){
     switch(choice){
@@ -31,6 +32,7 @@ int main() {
       cout << "loading file..." << endl;
       lib.load_library(filename);
       cout << "file loaded. Please press enter to continue." << endl;
+      cin.ignore();
       cin.get();
       choice = 0;
       break;
@@ -40,6 +42,7 @@ int main() {
       cout << "writing file..." << endl;
       lib.write_library(filename);
       cout << "File written. Please press enter to continue." << endl;
+      cin.ignore();
       cin.get();
       choice = 0;
       break;
@@ -47,11 +50,13 @@ int main() {
       cout << endl;
       lib.print_library();
       cout << endl << "Please press enter to continue." << endl;
+      cin.ignore();
       cin.get();
       choice = 0;
       break;
     case '4':
       cout << endl << "Please enter author's name here:  ";
+      cin.ignore();
       getline(cin, author);
       cout << endl << "Here's all books by " << author << endl;
       lib.find_author(author);
@@ -61,6 +66,7 @@ int main() {
       break;
     case '5':
       cout << endl << "Please enter book title here:  ";
+      cin.ignore();
       getline(cin,title);
       cout << endl << "Here's " << title << '.' << endl;
       lib.find_album(title);
@@ -70,6 +76,7 @@ int main() {
       break;
     case '6':
       cout << endl << "Please enter the title of the book:  ";
+      cin.ignore();
       getline(cin, title);
       cout << "Please enter the author of the book:  ";
       getline(cin, author);
@@ -81,6 +88,7 @@ int main() {
       break;
     case '7':
       cout << endl << "Please enter the title:  ";
+      cin.ignore();
       getline(cin, title);
       cout << "Please enter the author:  ";
       getline(cin, author);
@@ -95,7 +103,8 @@ int main() {
 
       cout << endl << "Adding book..." << endl;
       lib.add_book(title, author, isbn, pages, price, year);
-      cout << endl << "Book added. Please press enter to continue." <<endl;
+      cout << endl << "Book added. Please press enter to continue." << endl;
+      cin.ignore();
       cin.get();
       choice = 0;
       break;
