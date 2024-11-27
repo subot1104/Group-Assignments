@@ -8,8 +8,8 @@ class Deque {
   std::string **blockmap;
   int mapSize;
   int dequeSize;
-  int frontIndex;
-  int backIndex;
+  int frontBlock;
+  int frontElement;
   void resizeDeque();
  public:
   Deque();
