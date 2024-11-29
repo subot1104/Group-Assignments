@@ -1,5 +1,5 @@
 #include "deque.h"
-
+#include <string>
 using namespace std;
 
 Deque::Deque(){
@@ -43,8 +43,8 @@ std::string Deque::operator[](int index){
   int block;
   int element;
 
-  block = frontBlock + ((front_element + index) / BLOCK_SIZE);
-  element (frontElement + index) % BLOCK_SIZE;
+  block = frontBlock + ((frontElement + index) / BLOCK_SIZE);
+  element = (frontElement + index) % BLOCK_SIZE;
 
   return blockmap[block][element];
 }
@@ -54,10 +54,10 @@ void Deque::push_front(std::string newData){
   if(blockmap == NULL){
     resizeDeque();
     frontBlock = 1;
-    backBlock = 1
+    backBlock = 1;
     frontElement = BLOCK_SIZE / 2;
     backElement = BLOCK_SIZE / 2;
-    *blockmap[frontBlock] = new std::string[BLOCK_SIZE];
+    blockmap[frontBlock] = new std::string[BLOCK_SIZE];
     blockmap[frontBlock][frontElement] = newData;
   }
   //case 2: at the front end of the block
@@ -94,17 +94,19 @@ void Deque::pop_front(){
   dequeSize--;
 }
 
-void Deque::push_back(int newData){
+void Deque::push_back(std::string newData){
   //case 1: empty block
   if(blockmap == NULL){
     resizeDeque();
     frontBlock = 1;
+    backBlock = 1;
     frontElement = BLOCK_SIZE / 2;
-    *blockmap[frontBlock] = new std::string[BLOCK_SIZE];
+    backElement = BLOCK_SIZE / 2;
+    blockmap[backBlock] = new std::string[BLOCK_SIZE];
     blockmap[frontBlock][frontElement] = newData;
   }    
   //case 2: at the back end of block
-  else if(lastElement == BLOCK_SIZE - 1){
+  else if(backElement == BLOCK_SIZE - 1){
     if(blockmap[backBlock + 1] == NULL)
       resizeDeque();
     backBlock = backBlock + 1;

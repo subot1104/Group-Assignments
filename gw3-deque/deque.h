@@ -1,6 +1,8 @@
 #ifndef DEQUE_H
 #define DEQUE_H
 
+#include <string>
+
 const int BLOCK_SIZE = 16;
 
 class Deque {
