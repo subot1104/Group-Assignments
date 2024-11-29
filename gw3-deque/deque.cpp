@@ -48,3 +48,101 @@ std::string Deque::operator[](int index){
 
   return blockmap[block][element];
 }
+
+void Deque::push_front(std::string newData){
+  //case 1: empty blockmap
+  if(blockmap == NULL){
+    resizeDeque();
+    frontBlock = 1;
+    backBlock = 1
+    frontElement = BLOCK_SIZE / 2;
+    backElement = BLOCK_SIZE / 2;
+    *blockmap[frontBlock] = new std::string[BLOCK_SIZE];
+    blockmap[frontBlock][frontElement] = newData;
+  }
+  //case 2: at the front end of the block
+  else if(frontElement - 1 < 0){
+    //check if the previous block is initialized
+    if(blockmap[frontBlock - 1] == NULL)
+      resizeDeque();
+
+    frontBlock = frontBlock - 1;
+    frontElement = BLOCK_SIZE - 1;
+    blockmap[frontBlock][frontElement] = newData;
+  }
+  //case 3: in the middle of a block
+  else{
+    frontElement = frontElement - 1;
+    blockmap[frontBlock][frontElement] = newData;
+  }
+  dequeSize++;
+}
+
+void Deque::pop_front(){
+  //another case: empty
+  if(dequeSize == 0)
+    return;
+  //case 1: at back end of block
+  else if(frontElement == BLOCK_SIZE - 1){
+    frontBlock = frontBlock + 1;
+    frontElement = 0;
+  }
+  //case 2: middle of block
+  else{
+    frontElement = frontElement + 1;
+  }
+  dequeSize--;
+}
+
+void Deque::push_back(int newData){
+  //case 1: empty block
+  if(blockmap == NULL){
+    resizeDeque();
+    frontBlock = 1;
+    frontElement = BLOCK_SIZE / 2;
+    *blockmap[frontBlock] = new std::string[BLOCK_SIZE];
+    blockmap[frontBlock][frontElement] = newData;
+  }    
+  //case 2: at the back end of block
+  else if(lastElement == BLOCK_SIZE - 1){
+    if(blockmap[backBlock + 1] == NULL)
+      resizeDeque();
+    backBlock = backBlock + 1;
+    backElement = 0;
+    blockmap[backBlock][backElement] = newData;
+  }
+  //case 3: middle of block
+  else{
+    backElement = backElement + 1;
+    blockmap[backBlock][backBlock] = newData;
+  }
+  dequeSize++;
+}
+
+void Deque::pop_back(){
+  //another case: empty
+  if(dequeSize == 0)
+    return;
+  //case 1: at the front end of a block
+  else if(backElement == 0){
+    backBlock = backBlock - 1;
+    backElement = BLOCK_SIZE - 1;
+  }
+  //case 2: middle of block
+  else{
+    backElement = backElement - 1;
+  }
+  dequeSize--;
+}
+
+bool Deque::empty(){
+  if (dequeSize == 0){
+    return true;
+  }
+  else
+    return false;
+}
+
+int Deque::size(){
+  return dequeSize;
+}

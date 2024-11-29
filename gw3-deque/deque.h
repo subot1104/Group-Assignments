@@ -10,6 +10,8 @@ class Deque {
   int dequeSize;
   int frontBlock;
   int frontElement;
+  int backBlock;
+  int backElement;
   void resizeDeque();
  public:
   Deque();
