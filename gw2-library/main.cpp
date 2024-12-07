@@ -14,16 +14,6 @@ using namespace std;
 
 int main() {
   char choice = 0;
-  Library lib;
-  string filename;
-  string author;
-  string title;
-  string isbn;
-  int pages;
-  float price;
-  short year;
-  cout << fixed << setprecision(2);
-  
   while(choice != 'q'){
     switch(choice){
     case '1':

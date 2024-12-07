@@ -9,7 +9,7 @@ Deque::Deque(){
 }
 
 Deque::~Deque(){
-  for(int i = 0; i < mapSize ; i++)
+  for(int i = frontBlock; i <= backBlock ; i++)
     delete[] blockmap[i];
   
   delete[] blockmap;
@@ -32,6 +32,7 @@ void Deque::resizeDeque(){
     for(int i = 0; i < mapSize - 2; i++)
       newBlockmap[i + 1] = blockmap[i];
     frontBlock += 1;
+    backBlock += 1;
 
     delete[] blockmap;
     blockmap = newBlockmap;
@@ -63,9 +64,10 @@ void Deque::push_front(std::string newData){
   //case 2: at the front end of the block
   else if(frontElement - 1 < 0){
     //check if the previous block is initialized
-    if(blockmap[frontBlock - 1] == NULL)
+    if(blockmap[frontBlock - 1] == NULL){
       resizeDeque();
-
+      blockmap[frontBlock - 1] = new std::string[BLOCK_SIZE];
+    }
     frontBlock = frontBlock - 1;
     frontElement = BLOCK_SIZE - 1;
     blockmap[frontBlock][frontElement] = newData;
@@ -107,8 +109,10 @@ void Deque::push_back(std::string newData){
   }    
   //case 2: at the back end of block
   else if(backElement == BLOCK_SIZE - 1){
-    if(blockmap[backBlock + 1] == NULL)
+    if(blockmap[backBlock + 1] == NULL){
       resizeDeque();
+      blockmap[backBlock + 1] = new std::string[BLOCK_SIZE];
+    }
     backBlock = backBlock + 1;
     backElement = 0;
     blockmap[backBlock][backElement] = newData;
@@ -116,7 +120,7 @@ void Deque::push_back(std::string newData){
   //case 3: middle of block
   else{
     backElement = backElement + 1;
-    blockmap[backBlock][backBlock] = newData;
+    blockmap[backBlock][backElement] = newData;
   }
   dequeSize++;
 }
@@ -147,4 +151,18 @@ bool Deque::empty(){
 
 int Deque::size(){
   return dequeSize;
+}
+
+std::string Deque::front(){
+  if(dequeSize != 0)
+    return blockmap[frontBlock][frontElement];
+  else
+    return "";
+}
+
+std::string Deque::back(){
+  if(dequeSize != 0)
+    return blockmap[backBlock][backElement];
+  else
+    return "";
 }

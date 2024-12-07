@@ -3,7 +3,7 @@
 
 #include <string>
 
-const int BLOCK_SIZE = 16;
+const int BLOCK_SIZE = 8;
 
 class Deque {
  private:
