@@ -207,6 +207,10 @@ void save(string filename, Deque &deq){
 void print(Deque &deq){
   int count = 0;
 
+  if(deq.empty()){
+    cout << "empty" << endl;
+    return;
+  }
   for(int i = 0; i < deq.size(); i++){
     cout << deq[i] << ' ';
     count++;
