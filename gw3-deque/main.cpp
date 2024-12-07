@@ -1,10 +1,10 @@
 /**
  * @file main.cpp
  * @author Jose Hipolito
- * @date 2024-11-08
- * @brief library driver
+ * @date 2024-12-6
+ * @brief deque driver
  * 
- * driver for the library class
+ * driver for the deque class
  */
 
 #include <iostream>
@@ -13,10 +13,65 @@
 
 using namespace std;
 
+
+/**
+ * loads file into memory
+ *
+ * @param string filename filepath
+ * @param Deque &deq deque being loaded
+ * @pre 
+ * @return void 
+ * @post loads deque with data from file
+ * 
+ */
 void load(string filename, Deque &deq);
+
+/**
+ * saves loaded data into file
+ *
+ * @param string filename filepath being saved to
+ * @param Deque &deq deque being saved
+ * @pre 
+ * @return void 
+ * @post deque is saved
+ * 
+ */
 void save(string filename, Deque &deq);
-void print(Deque deq);
+
+/**
+ * prints deque onto command line
+ *
+ * @param Deque deq deque being printed
+ * @pre 
+ * @return void 
+ * @post prints deque
+ * 
+ */
+void print(Deque &deq);
+
+/**
+ * delete a word from deque
+ *
+ * @param char dir end being poped (1:front 2:back)
+ * @param Deque &deq deque being altered
+ * @pre 
+ * @return void 
+ * @post deletes word from deque
+ * 
+ */
 void Delete(char dir, Deque &deq);
+
+/**
+ * adds word to deque
+ *
+ * @param char dir end being pushed (1:front 2:back)
+ * @param Deque &deq deque being altered
+ * @param string word word being added
+ * @pre 
+ * @return void 
+ * @post adds word
+ * 
+ */
 void add(char dir, Deque &deq, string word);
 
 int main() {
@@ -149,7 +204,7 @@ void save(string filename, Deque &deq){
   wrdeq.close();
 }
 
-void print(Deque deq){
+void print(Deque &deq){
   int count = 0;
 
   for(int i = 0; i < deq.size(); i++){

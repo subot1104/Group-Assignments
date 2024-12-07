@@ -1,3 +1,12 @@
+/**
+ * @file deque.cpp
+ * @author Jose Hipolito
+ * @date 2024-12-06
+ * @brief deque methods
+ * 
+ * contains method defintions for deque class
+ */
+
 #include "deque.h"
 #include <string>
 using namespace std;
@@ -9,9 +18,10 @@ Deque::Deque(){
 }
 
 Deque::~Deque(){
-  for(int i = frontBlock; i <= backBlock ; i++)
-    delete[] blockmap[i];
-  
+  for(int i = 0; i < mapSize; i++){
+    if(blockmap[i] != NULL)
+      delete[] blockmap[i];
+  }
   delete[] blockmap;
 }
 
